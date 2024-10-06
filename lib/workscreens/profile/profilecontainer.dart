@@ -3,6 +3,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:taskmanager/dataLoad.dart';
 import 'package:taskmanager/global.dart';
+import 'package:taskmanager/workscreens/profile/shownamechangedialog.dart';
 
 class ProfileContainer extends StatefulWidget {
   final Function logout;
@@ -15,60 +16,26 @@ class ProfileContainer extends StatefulWidget {
 class _ProfileContainerState extends State<ProfileContainer> {
   final user = FirebaseAuth.instance.currentUser;
   final database = FirebaseDatabase.instance;
-  UserData userDecode = UserData(date: '', premium: false, data: [], name: '');
+  UserData userDecode =
+      UserData(date: '', premium: false, data: [], name: '', uid: "");
   final TextEditingController _nameController = TextEditingController();
 
   void loadUpdate() {
     loadData(database, user!.uid, userDecode, () {
+      //загружаем данные
       setState(() {
         _nameController.text = userDecode.name;
         String fullName = userDecode.name;
         userDecode.name =
             fullName.length > 10 ? '${fullName.substring(0, 10)}...' : fullName;
       });
-    });
+    }, context);
   }
 
   @override
   void initState() {
     loadUpdate();
     super.initState();
-  }
-
-  void _showNameChangeDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Изменить имя"),
-          content: TextField(
-            controller: _nameController,
-            decoration: const InputDecoration(hintText: "Введите новое имя"),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text("Отмена"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text("Сохранить"),
-              onPressed: () async {
-                DatabaseReference ref =
-                    FirebaseDatabase.instance.ref("users/${user!.uid}");
-
-                await ref.update({
-                  "name": _nameController.text,
-                });
-                loadUpdate();
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
   }
 
   @override
@@ -92,12 +59,10 @@ class _ProfileContainerState extends State<ProfileContainer> {
               Align(
                 alignment: Alignment.topRight,
                 child: GestureDetector(
-                    child: Container(
-                      child: Icon(
-                        Icons.logout,
-                        color: Colors.white,
-                        size: heigtScreen * 0.04,
-                      ),
+                    child: Icon(
+                      Icons.logout,
+                      color: Colors.white,
+                      size: heigtScreen * 0.04,
                     ),
                     onTap: () {
                       widget.logout();
@@ -119,7 +84,8 @@ class _ProfileContainerState extends State<ProfileContainer> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          _showNameChangeDialog();
+                          showNameChangeDialog(context, _nameController, user,
+                              loadUpdate); //редачим и загружаем заново
                         },
                         child: Icon(
                           Icons.edit,
@@ -140,7 +106,7 @@ class _ProfileContainerState extends State<ProfileContainer> {
                   Text(
                       userDecode.premium == true
                           ? "Премиум есть"
-                          : "Премиум нет",
+                          : "Премиума нет",
                       style: appTextStyle),
                 ],
               )

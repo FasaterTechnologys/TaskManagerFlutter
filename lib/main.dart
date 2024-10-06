@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:taskmanager/authorization/login.dart';
 import 'package:taskmanager/authorization/loginonreg/email_aunt.dart';
 import 'package:taskmanager/global.dart';
-import 'package:taskmanager/workscreens/home.dart';
+import 'package:taskmanager/workscreens/home/home.dart';
 import 'package:taskmanager/workscreens/profile/profile.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
   runApp(const MyApp());
 }
 
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const Login(),
         '/home': (context) => const Home(),
         '/profile': (context) => const Profile(),
+        '/mailverif': (context) => const EmailVerificationScreen(),
       },
     );
   }

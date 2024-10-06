@@ -31,8 +31,8 @@ class _ButtonAuthState extends State<ButtonAuth>
           widget.hint,
           style: const TextStyle(
             color: Colors.white,
-            fontSize: 35,
-            fontWeight: FontWeight.w400,
+            fontSize: 30,
+            fontWeight: FontWeight.w300,
           ),
         ),
       ),

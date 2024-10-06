@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:taskmanager/authorization/loginonreg/checkemailverifed.dart';
 import 'package:taskmanager/global.dart';
 
 class EmailVerificationScreen extends StatefulWidget {
@@ -12,7 +13,6 @@ class EmailVerificationScreen extends StatefulWidget {
 }
 
 class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
-  bool isEmailVerified = false;
   Timer? timer;
   bool lock = true;
   @override
@@ -22,32 +22,18 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
     FirebaseAuth.instance.currentUser?.sendEmailVerification();
     timer = Timer.periodic(const Duration(seconds: 3), (timer) {
       print(timer.tick);
-      checkEmailVerified();
+      checkEmailVerified(context, timer, () {
+        setState(() {});
+      });
       if (timer.tick % 10 == 0) {
         lock = false;
       }
     });
   }
 
-  checkEmailVerified() async {
-    await FirebaseAuth.instance.currentUser?.reload();
-
-    setState(() {
-      isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
-    });
-
-    if (isEmailVerified) {
-      // TODO: implement your code after email verification
-      timer?.cancel();
-      final navigator = Navigator.of(context);
-      navigator.pushNamedAndRemoveUntil(
-          "/home", (Route<dynamic> route) => false);
-    }
-  }
-
   @override
   void dispose() {
-// TODO: implement dispose
+    // TODO: implement dispose
     timer?.cancel();
     super.dispose();
   }
@@ -55,6 +41,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
   @override
   Widget build(BuildContext context) {
     FirebaseAuth auth = FirebaseAuth.instance;
+    final navigator = Navigator.of(context);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -64,7 +51,6 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
               onTap: () async {
                 timer?.cancel();
                 await FirebaseAuth.instance.signOut();
-                final navigator = Navigator.of(context);
                 navigator.pushNamedAndRemoveUntil(
                     "/login", (Route<dynamic> route) => false);
               },
