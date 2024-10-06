@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:taskmanager/global.dart';
-import 'package:taskmanager/workscreens/drawer.dart';
 import 'package:taskmanager/workscreens/profile/profilecontainer.dart';
 
 import '../../scaffoldallscreen.dart';

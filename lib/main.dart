@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Task Manager',
       theme: ThemeData(
+        colorSchemeSeed: backGroundcolor,
         useMaterial3: true,
       ),
       routes: {

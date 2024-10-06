@@ -1,10 +1,13 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:taskmanager/authorization/loginonreg/email_aunt.dart';
 import 'package:intl/intl.dart';
 
-Future<void> aunt(String mail, String password, BuildContext context) async {
+Future<void> aunt(String mail, String password, BuildContext context,
+    Function(String) update) async {
   try {
     final user = FirebaseAuth.instance;
     await user.createUserWithEmailAndPassword(
@@ -28,20 +31,26 @@ Future<void> aunt(String mail, String password, BuildContext context) async {
                 const EmailVerificationScreen()));
   } on FirebaseAuthException catch (e) {
     if (e.code == 'weak-password') {
-      print('The password provided is too weak.');
+      update("Слабый пароль.");
     } else if (e.code == 'email-already-in-use') {
+      log("Почта используется");
       try {
         await FirebaseAuth.instance
             .signInWithEmailAndPassword(email: mail, password: password);
         Navigator.of(context)
             .pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
       } on FirebaseAuthException catch (e) {
-        if (e.code == 'user-not-found') {
-          print('No user found for that email.');
-        } else if (e.code == 'wrong-password') {
-          print('Wrong password provided for that user.');
+        if (e.code == 'wrong-password') {
+          update("Неверный пароль.");
+        } else {
+          log("Пизда забанили ${e.code}");
+          update("Слишком много запросов.");
         }
       }
+      log("Закончилось");
+    } else {
+      print(e.code);
+      update(e.code);
     }
   } catch (e) {
     print(e);

@@ -14,13 +14,19 @@ class EmailVerificationScreen extends StatefulWidget {
 class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
   bool isEmailVerified = false;
   Timer? timer;
+  bool lock = true;
   @override
   void initState() {
-// TODO: implement initState
+    // TODO: implement initState
     super.initState();
     FirebaseAuth.instance.currentUser?.sendEmailVerification();
-    timer =
-        Timer.periodic(const Duration(seconds: 3), (_) => checkEmailVerified());
+    timer = Timer.periodic(const Duration(seconds: 3), (timer) {
+      print(timer.tick);
+      checkEmailVerified();
+      if (timer.tick % 10 == 0) {
+        lock = false;
+      }
+    });
   }
 
   checkEmailVerified() async {
@@ -31,12 +37,11 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
     });
 
     if (isEmailVerified) {
-// TODO: implement your code after email verification
-
+      // TODO: implement your code after email verification
+      timer?.cancel();
       final navigator = Navigator.of(context);
       navigator.pushNamedAndRemoveUntil(
           "/home", (Route<dynamic> route) => false);
-      timer?.cancel();
     }
   }
 
@@ -52,6 +57,25 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
     FirebaseAuth auth = FirebaseAuth.instance;
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: backGroundcolor,
+          actions: [
+            GestureDetector(
+              onTap: () async {
+                timer?.cancel();
+                await FirebaseAuth.instance.signOut();
+                final navigator = Navigator.of(context);
+                navigator.pushNamedAndRemoveUntil(
+                    "/login", (Route<dynamic> route) => false);
+              },
+              child: const Icon(
+                Icons.cancel,
+                size: 30,
+                color: Color.fromARGB(255, 207, 207, 207),
+              ),
+            )
+          ],
+        ),
         backgroundColor: backGroundcolor,
         body: Center(
           child: SingleChildScrollView(
@@ -59,13 +83,15 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Center(child: Text("Проверьте почту", style: appTextStyle)),
-                const SizedBox(height: 8),
+                SizedBox(height: heigtScreen * 0.05),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 32.0),
                   child: Center(
                       child: Text(
-                          'Мы отправили письмо на указанный Email ${auth.currentUser?.email}',
-                          style: appTextStyle)),
+                    'Мы отправили письмо на указанный Email ${auth.currentUser?.email}',
+                    style: applowTextStyle,
+                    textAlign: TextAlign.center,
+                  )),
                 ),
                 const SizedBox(height: 16),
                 const Center(child: CircularProgressIndicator()),
@@ -73,8 +99,8 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 32.0),
                   child: Center(
-                      child:
-                          Text('Подтверждение почты...', style: appTextStyle)),
+                      child: Text('Подтверждение почты...',
+                          style: applowTextStyle)),
                 ),
                 const SizedBox(height: 57),
                 Padding(
@@ -84,15 +110,22 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                       height: heigtScreen * 0.05,
                       width: widthScreen * 0.4,
                       child: Center(
-                        child: Text('Повторить', style: appTextStyle),
+                        child: Text(
+                          'Повторить',
+                          style: applowTextStyle,
+                        ),
                       ),
                     ),
                     onTap: () {
-                      try {
-                        FirebaseAuth.instance.currentUser
-                            ?.sendEmailVerification();
-                      } catch (e) {
-                        debugPrint('$e');
+                      if (lock == false) {
+                        print("Отправлено");
+                        lock = true;
+                        try {
+                          FirebaseAuth.instance.currentUser
+                              ?.sendEmailVerification();
+                        } catch (e) {
+                          debugPrint('$e');
+                        }
                       }
                     },
                   ),

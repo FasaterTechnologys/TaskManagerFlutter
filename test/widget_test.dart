@@ -5,7 +5,7 @@ import 'package:taskmanager/global.dart';
 /// Пример простейшей анимации
 
 void main() {
-  runApp(MyApp()); // запуск
+  runApp(const MyApp()); // запуск
 }
 
 class MyApp extends StatelessWidget {

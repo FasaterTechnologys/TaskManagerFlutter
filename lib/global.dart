@@ -14,6 +14,30 @@ TextStyle appTextStyle = const TextStyle(
   letterSpacing: 0.5,
 );
 
+TextStyle appErrorStyle = const TextStyle(
+  fontFamily: 'Roboto',
+  fontSize: 20,
+  fontWeight: FontWeight.w400,
+  color: Color.fromARGB(255, 131, 28, 28),
+  letterSpacing: 0.5,
+);
+
+TextStyle applowTextStyle = const TextStyle(
+  fontFamily: 'Roboto',
+  fontSize: 20,
+  fontWeight: FontWeight.w400,
+  color: Color.fromARGB(255, 207, 207, 207),
+  letterSpacing: 0.5,
+);
+
+TextStyle appverylowTextStyle = const TextStyle(
+  fontFamily: 'Roboto',
+  fontSize: 17,
+  fontWeight: FontWeight.w400,
+  color: Color.fromARGB(255, 158, 158, 158),
+  letterSpacing: 0.5,
+);
+
 TextStyle titleTextStyle = const TextStyle(
   fontFamily: 'Roboto',
   fontSize: 50,

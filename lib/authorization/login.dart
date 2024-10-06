@@ -12,6 +12,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  String errorStr = "";
   @override
   Widget build(BuildContext context) {
     TextEditingController mail = TextEditingController();
@@ -40,8 +41,20 @@ class _LoginState extends State<Login> {
               SizedBox(
                 height: height * 0.02,
               ),
+              if (errorStr != "")
+                Container(
+                    margin: const EdgeInsets.all(10),
+                    child: Text(errorStr, style: appErrorStyle)),
               GestureDetector(
-                  onTap: () => aunt(mail.text, password.text, context),
+                  onTap: () => aunt(
+                        mail.text,
+                        password.text,
+                        context,
+                        (error) => setState(() {
+                          errorStr = error;
+                          print(error);
+                        }),
+                      ),
                   child: const ButtonAuth(hint: "Войти")),
               SizedBox(
                 height: height * 0.2,

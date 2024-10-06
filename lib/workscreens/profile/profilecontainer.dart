@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -85,7 +82,7 @@ class _ProfileContainerState extends State<ProfileContainer> {
             color: const Color.fromARGB(255, 54, 51, 51).withOpacity(0.5),
             spreadRadius: 5,
             blurRadius: 7,
-            offset: Offset(0, 3),
+            offset: const Offset(0, 3),
           )
         ], color: container, borderRadius: BorderRadius.circular(20)),
         child: Center(
