@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +31,7 @@ class UserData {
 }
 
 Future<void> loadData(FirebaseDatabase database, String user, UserData userData,
-    Function callback, BuildContext context) async {
+    Function callback, NavigatorState navigator) async {
   try {
     DatabaseEvent event = await database.ref().child("users/$user").once();
     DataSnapshot snapshot = event.snapshot;
@@ -54,11 +56,10 @@ Future<void> loadData(FirebaseDatabase database, String user, UserData userData,
       callback();
     } else {
       await FirebaseAuth.instance.signOut();
-      final navigator = Navigator.of(context);
       navigator.pushNamedAndRemoveUntil(
           "/login", (Route<dynamic> route) => false);
     }
   } catch (e) {
-    print('Ошибка при загрузке данных: $e');
+    log('Ошибка при загрузке данных: $e');
   }
 }

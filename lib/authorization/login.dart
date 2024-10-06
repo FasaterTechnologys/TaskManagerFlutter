@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:taskmanager/authorization/button_auth.dart';
 import 'package:taskmanager/authorization/loginonreg/aunt.dart';
+import 'package:taskmanager/authorization/loginonreg/checkerror.dart';
 import 'package:taskmanager/global.dart';
 import 'package:taskmanager/widgets/textfield.dart';
 
@@ -63,25 +64,14 @@ class _LoginState extends State<Login> {
               load == false
                   ? GestureDetector(
                       onTap: () async {
-                        print("Нажал");
                         setState(() {
                           load = true;
-                          print("Обновил $load");
                         });
-
-                        String error = await aunt(
-                            mail.text, password.text, context, errorStr);
-                        if (error == 'nice') {
-                          navigator.pushNamedAndRemoveUntil(
-                              "/home", (Route<dynamic> route) => false);
-                        } else if (error == "mail-check") {
-                          navigator.pushNamedAndRemoveUntil(
-                              "/mailverif", (Route<dynamic> route) => false);
-                        } else {
-                          setState(() {
-                            errorStr = error;
-                          });
-                        }
+                        errorStr = checkerror(
+                            await aunt(mail.text, password.text, errorStr),
+                            navigator,
+                            () => setState(
+                                () {})); // Получаем ошибку если есть, если нету то переходим дальше либо на проверку почты
                         mail.text = "";
                         password.text = "";
                         load = false;

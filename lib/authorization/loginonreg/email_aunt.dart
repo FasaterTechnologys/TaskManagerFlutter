@@ -15,16 +15,17 @@ class EmailVerificationScreen extends StatefulWidget {
 class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
   Timer? timer;
   bool lock = true;
+  late NavigatorState navigator;
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    navigator = Navigator.of(context);
     FirebaseAuth.instance.currentUser?.sendEmailVerification();
     timer = Timer.periodic(const Duration(seconds: 3), (timer) {
-      print(timer.tick);
       checkEmailVerified(context, timer, () {
         setState(() {});
-      });
+      }, navigator);
       if (timer.tick % 10 == 0) {
         lock = false;
       }
@@ -33,7 +34,6 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     timer?.cancel();
     super.dispose();
   }
@@ -104,7 +104,6 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                     ),
                     onTap: () {
                       if (lock == false) {
-                        print("Отправлено");
                         lock = true;
                         try {
                           FirebaseAuth.instance.currentUser

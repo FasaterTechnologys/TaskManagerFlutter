@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:taskmanager/global.dart';
 import 'package:taskmanager/scaffoldallscreen.dart';
@@ -58,10 +60,10 @@ class TaskInputBottomSheet extends StatefulWidget {
   const TaskInputBottomSheet({super.key});
 
   @override
-  _TaskInputBottomSheetState createState() => _TaskInputBottomSheetState();
+  TaskInputBottomSheetState createState() => TaskInputBottomSheetState();
 }
 
-class _TaskInputBottomSheetState extends State<TaskInputBottomSheet> {
+class TaskInputBottomSheetState extends State<TaskInputBottomSheet> {
   final _formKey = GlobalKey<FormState>();
   final _taskController = TextEditingController();
 
@@ -104,7 +106,7 @@ class _TaskInputBottomSheetState extends State<TaskInputBottomSheet> {
                       // Сохраняем введенную задачу
                       String newTask = _taskController.text;
                       // Здесь обработайте новую задачу, например, добавьте ее в список
-                      print('Новая задача: $newTask');
+                      log('Новая задача: $newTask');
 
                       // Закрываем окно
                       Navigator.of(context).pop();

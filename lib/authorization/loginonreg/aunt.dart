@@ -2,11 +2,9 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-Future<String> aunt(
-    String mail, String password, BuildContext context, String error) async {
+Future<String> aunt(String mail, String password, String error) async {
   String error = "";
   try {
     final user = FirebaseAuth.instance;
@@ -51,11 +49,10 @@ Future<String> aunt(
       }
       log("Закончилось");
     } else {
-      print(e.code);
       error = e.code;
     }
   } catch (e) {
-    print(e);
+    log(e.toString());
   }
   return error;
 }

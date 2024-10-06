@@ -15,6 +15,7 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
+    final navigator = Navigator.of(context);
     return ScaffoldAllScreen(
       body: Center(
         child: Column(
@@ -25,7 +26,7 @@ class _ProfileState extends State<Profile> {
             ProfileContainer(() async {
               await FirebaseAuth.instance.signOut();
 
-              route(context, "/login");
+              route(navigator, "/login");
             }),
             SizedBox(
               height: heigtScreen * 0.1,

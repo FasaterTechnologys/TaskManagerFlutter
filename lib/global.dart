@@ -54,7 +54,6 @@ TextStyle buttonTextStyle = const TextStyle(
   letterSpacing: 0.5,
 );
 
-void route(BuildContext context, String screen) {
-  Navigator.of(context)
-      .pushNamedAndRemoveUntil(screen, (Route<dynamic> route) => false);
+void route(NavigatorState navigator, String screen) {
+  navigator.pushNamedAndRemoveUntil(screen, (Route<dynamic> route) => false);
 }

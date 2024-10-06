@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:taskmanager/global.dart';
@@ -68,9 +70,9 @@ class _AnimExampleState extends State<AnimExample>
         final ref = FirebaseDatabase.instance.ref();
         final snapshot = await ref.child('users/айди').get();
         if (snapshot.exists) {
-          print(snapshot.value);
+          log(snapshot.value.toString());
         } else {
-          print('No data available.');
+          log('No data available.');
         }
       },
     );

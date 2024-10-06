@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:taskmanager/dataLoad.dart';
+import 'package:taskmanager/data_load.dart';
 import 'package:taskmanager/global.dart';
 import 'package:taskmanager/workscreens/profile/shownamechangedialog.dart';
 
@@ -19,7 +19,6 @@ class _ProfileContainerState extends State<ProfileContainer> {
   UserData userDecode =
       UserData(date: '', premium: false, data: [], name: '', uid: "");
   final TextEditingController _nameController = TextEditingController();
-
   void loadUpdate() {
     loadData(database, user!.uid, userDecode, () {
       //загружаем данные
@@ -29,7 +28,7 @@ class _ProfileContainerState extends State<ProfileContainer> {
         userDecode.name =
             fullName.length > 10 ? '${fullName.substring(0, 10)}...' : fullName;
       });
-    }, context);
+    }, Navigator.of(context));
   }
 
   @override

@@ -48,7 +48,6 @@ class FirebaseStream extends StatelessWidget {
     return StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
-        print(snapshot.data);
         if (snapshot.hasError) {
           return const Scaffold(
               body: Center(child: Text('Что-то пошло не так!')));
