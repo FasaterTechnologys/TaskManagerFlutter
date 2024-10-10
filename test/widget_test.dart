@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:taskmanager/global.dart';
+import 'package:taskmanager/consts.dart';
 
 /// Пример простейшей анимации
 

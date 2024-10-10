@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:taskmanager/global.dart';
+import 'package:taskmanager/consts.dart';
 import 'package:taskmanager/workscreens/profile/profilecontainer.dart';
 
-import '../../scaffoldallscreen.dart';
+import '../../scoffaldallscreen/scaffoldallscreen.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -15,7 +15,6 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
-    final navigator = Navigator.of(context);
     return ScaffoldAllScreen(
       body: Center(
         child: Column(
@@ -25,8 +24,10 @@ class _ProfileState extends State<Profile> {
             ),
             ProfileContainer(() async {
               await FirebaseAuth.instance.signOut();
-
-              route(navigator, "/login");
+              if (context.mounted) {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    "/login", (Route<dynamic> route) => false);
+              }
             }),
             SizedBox(
               height: heigtScreen * 0.1,

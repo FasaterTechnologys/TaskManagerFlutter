@@ -1,9 +1,11 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:taskmanager/global.dart';
-import 'package:taskmanager/scaffoldallscreen.dart';
+import 'package:taskmanager/consts.dart';
+import 'package:taskmanager/scoffaldallscreen/scaffoldallscreen.dart';
 import 'package:taskmanager/workscreens/home/addbutton.dart';
+import 'package:taskmanager/workscreens/home/taskinputbottomsheet.dart';
+import 'package:taskmanager/workscreens/home/listview.dart';
+
+import '../../managedata/managedata.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -13,6 +15,10 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  void refreshData() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScaffoldAllScreen(
@@ -20,6 +26,9 @@ class _HomeState extends State<Home> {
         children: [
           SizedBox(
             height: heigtScreen * 0.01,
+          ),
+          Expanded(
+            child: listView(refreshData),
           ),
           Stack(
             alignment: AlignmentDirectional.center,
@@ -30,10 +39,12 @@ class _HomeState extends State<Home> {
                   children: [
                     GestureDetector(
                       onTap: () {
+                        print(data);
                         showModalBottomSheet(
                           context: context,
                           isScrollControlled: true,
-                          builder: (context) => const TaskInputBottomSheet(),
+                          builder: (context) =>
+                              TaskInputBottomSheet(updateData: refreshData),
                         );
                       },
                       child: addbutton(),
@@ -51,73 +62,6 @@ class _HomeState extends State<Home> {
             ],
           )
         ],
-      ),
-    );
-  }
-}
-
-class TaskInputBottomSheet extends StatefulWidget {
-  const TaskInputBottomSheet({super.key});
-
-  @override
-  TaskInputBottomSheetState createState() => TaskInputBottomSheetState();
-}
-
-class TaskInputBottomSheetState extends State<TaskInputBottomSheet> {
-  final _formKey = GlobalKey<FormState>();
-  final _taskController = TextEditingController();
-
-  @override
-  void dispose() {
-    _taskController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: backGroundcolor,
-      padding: const EdgeInsets.all(20.0),
-      child: SizedBox(
-        height: heigtScreen * 0.8,
-        child: Scaffold(
-          key: _formKey,
-          body: SizedBox(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                TextFormField(
-                  controller: _taskController,
-                  decoration: const InputDecoration(
-                    hintText: 'Введите задачу',
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Пожалуйста, введите задачу';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 20.0),
-                ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      // Сохраняем введенную задачу
-                      String newTask = _taskController.text;
-                      // Здесь обработайте новую задачу, например, добавьте ее в список
-                      log('Новая задача: $newTask');
-
-                      // Закрываем окно
-                      Navigator.of(context).pop();
-                    }
-                  },
-                  child: const Text('Добавить'),
-                ),
-              ],
-            ),
-          ),
-        ),
       ),
     );
   }

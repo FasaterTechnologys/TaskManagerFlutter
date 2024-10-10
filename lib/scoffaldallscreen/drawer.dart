@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:taskmanager/global.dart';
-import 'package:taskmanager/workscreens/scripts/buttonhome.dart';
+import 'package:taskmanager/consts.dart';
+import 'package:taskmanager/scoffaldallscreen/buttongotohome.dart';
 
 Widget dawer(BuildContext context) {
   return Container(
@@ -21,14 +21,15 @@ Widget dawer(BuildContext context) {
                   Icon(Icons.settings,
                       size: widthScreen * 0.07, color: Colors.white),
                   Icon(Icons.cloud_off,
-                      size: widthScreen * 0.07, color: Colors.white)
+                      size: widthScreen * 0.07,
+                      color: const Color.fromARGB(255, 179, 49, 40))
                 ],
               ),
             ),
           ),
           Container(
             margin: EdgeInsets.only(
-                left: widthScreen * 0.07, top: widthScreen * 0.05),
+                left: widthScreen * 0.07, top: widthScreen * 0.09),
             child: Column(
               children: [
                 buttonHome(context, "/home", Icons.menu_book, "Главный экран"),

@@ -1,8 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:taskmanager/data_load.dart';
-import 'package:taskmanager/global.dart';
+import 'package:taskmanager/consts.dart';
+import 'package:taskmanager/manageuser/userfirebaseload.dart';
 import 'package:taskmanager/workscreens/profile/shownamechangedialog.dart';
 
 class ProfileContainer extends StatefulWidget {
@@ -14,32 +12,24 @@ class ProfileContainer extends StatefulWidget {
 }
 
 class _ProfileContainerState extends State<ProfileContainer> {
-  final user = FirebaseAuth.instance.currentUser;
-  final database = FirebaseDatabase.instance;
-  UserData userDecode =
-      UserData(date: '', premium: false, data: [], name: '', uid: "");
   final TextEditingController _nameController = TextEditingController();
-  void loadUpdate() {
-    loadData(database, user!.uid, userDecode, () {
-      //загружаем данные
-      setState(() {
-        _nameController.text = userDecode.name;
-        String fullName = userDecode.name;
-        userDecode.name =
-            fullName.length > 10 ? '${fullName.substring(0, 10)}...' : fullName;
-      });
-    }, Navigator.of(context));
+  UserLoaded userLoaded = UserLoaded();
+
+  Future refreshData() async {
+    await userLoaded.loaduserData();
+    setState(() {});
+    return Future.value();
   }
 
   @override
-  void initState() {
-    loadUpdate();
-    super.initState();
+  void dispose() {
+    _nameController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (userDecode.name != "") {
+    if (userDecode.name != "" && userDecode.name.isNotEmpty) {
       return Container(
         width: widthScreen * 0.8,
         height: heigtScreen * 0.25,
@@ -83,8 +73,12 @@ class _ProfileContainerState extends State<ProfileContainer> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          showNameChangeDialog(context, _nameController, user,
-                              loadUpdate); //редачим и загружаем заново
+                          showNameChangeDialog(
+                            context,
+                            _nameController,
+                            userDecode.uid,
+                            refreshData,
+                          );
                         },
                         child: Icon(
                           Icons.edit,

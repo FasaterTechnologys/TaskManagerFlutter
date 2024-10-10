@@ -1,8 +1,12 @@
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:taskmanager/manageuser/editusername.dart';
 
-void showNameChangeDialog(BuildContext context,
-    TextEditingController nameController, final user, Function loadUpdate) {
+void showNameChangeDialog(
+  BuildContext context,
+  TextEditingController nameController,
+  String user,
+  Function refreshData,
+) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -21,27 +25,19 @@ void showNameChangeDialog(BuildContext context,
           ),
           TextButton(
             child: const Text("Сохранить"),
-            onPressed: () {
-              if (nameController.text.length < 2 ||
-                  nameController.text.length > 20) return;
-              upDateName(nameController, user);
-              loadUpdate();
-              Navigator.of(context).pop();
+            onPressed: () async {
+              await editUserName(
+                nameController,
+                user,
+              );
+              if (context.mounted) {
+                Navigator.of(context).pop();
+                refreshData();
+              }
             },
           ),
         ],
       );
     },
   );
-}
-
-void upDateName(
-  TextEditingController nameController,
-  final user,
-) async {
-  DatabaseReference ref = FirebaseDatabase.instance.ref("users/${user!.uid}");
-
-  await ref.update({
-    "name": nameController.text,
-  });
 }

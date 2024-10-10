@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:taskmanager/global.dart';
+import 'package:taskmanager/consts.dart';
 
 Widget buttonHome(
     BuildContext context, String screen, IconData icon, String text) {

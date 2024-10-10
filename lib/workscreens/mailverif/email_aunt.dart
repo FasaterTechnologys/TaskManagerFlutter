@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:taskmanager/authorization/loginonreg/checkemailverifed.dart';
-import 'package:taskmanager/global.dart';
+import 'package:taskmanager/manageuser/checkemailverifed.dart';
+import 'package:taskmanager/consts.dart';
 
 class EmailVerificationScreen extends StatefulWidget {
   const EmailVerificationScreen({super.key});
@@ -20,12 +20,14 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
   @override
   void initState() {
     super.initState();
-    navigator = Navigator.of(context);
     FirebaseAuth.instance.currentUser?.sendEmailVerification();
-    timer = Timer.periodic(const Duration(seconds: 3), (timer) {
-      checkEmailVerified(context, timer, () {
-        setState(() {});
-      }, navigator);
+    timer = Timer.periodic(const Duration(seconds: 3), (timer) async {
+      if (await checkEmailVerified()) {
+        timer.cancel();
+        if (!mounted) return;
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil("/login", (Route<dynamic> route) => false);
+      }
       if (timer.tick % 10 == 0) {
         lock = false;
       }

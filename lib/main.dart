@@ -1,16 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:taskmanager/authorization/login.dart';
-import 'package:taskmanager/authorization/loginonreg/email_aunt.dart';
-import 'package:taskmanager/global.dart';
+import 'package:taskmanager/managedata/managedata.dart';
+import 'package:taskmanager/workscreens/login/login.dart';
+import 'package:taskmanager/workscreens/mailverif/email_aunt.dart';
+import 'package:taskmanager/consts.dart';
 import 'package:taskmanager/workscreens/home/home.dart';
 import 'package:taskmanager/workscreens/profile/profile.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-
   runApp(const MyApp());
 }
 
