@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:taskmanager/consts.dart';
+import 'package:taskmanager/manageuser/logout.dart';
 import 'package:taskmanager/manageuser/userfirebaseload.dart';
 import 'package:taskmanager/workscreens/profile/shownamechangedialog.dart';
 
 class ProfileContainer extends StatefulWidget {
-  final Function logout;
-  const ProfileContainer(this.logout, {super.key});
+  const ProfileContainer({super.key});
 
   @override
   State<ProfileContainer> createState() => _ProfileContainerState();
@@ -54,7 +54,7 @@ class _ProfileContainerState extends State<ProfileContainer> {
                       size: heigtScreen * 0.04,
                     ),
                     onTap: () {
-                      widget.logout();
+                      logout(context);
                     }),
               ),
               Row(

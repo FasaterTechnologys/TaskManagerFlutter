@@ -17,9 +17,7 @@ Future<String> loginOrRegister(String mail, String password) async {
     switch (e.code) {
       case 'weak-password':
         return "Слабый пароль.";
-      case 'email-already-in-use':
-        return "Почта уже используется.";
-      case 'wrong-password':
+      case 'wrong-password' || 'email-already-in-use':
         return "Неверный пароль.";
       default:
         log("Ошибка авторизации: ${e.code}");

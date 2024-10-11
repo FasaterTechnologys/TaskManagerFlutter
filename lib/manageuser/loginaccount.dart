@@ -6,7 +6,9 @@ Future<UserCredential?> loginAccount(String mail, String password) async {
         .signInWithEmailAndPassword(email: mail, password: password);
     return userCredential;
   } on FirebaseAuthException catch (e) {
-    if (e.code == 'user-not-found' || e.code == 'wrong-password') {
+    if (e.code == 'user-not-found' ||
+        e.code == 'wrong-password' ||
+        e.code == 'invalid-credential') {
       return null;
     } else {
       rethrow;

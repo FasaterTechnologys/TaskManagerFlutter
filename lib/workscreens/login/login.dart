@@ -33,9 +33,11 @@ class _LoginState extends State<Login> {
               Text("Flutter Task Manager",
                   style: titleTextStyle, textAlign: TextAlign.center),
               SizedBox(height: height * 0.15),
-              appTextField(context, mail, false, "Почта"),
+              appTextField(
+                  context, mail, false, "Почта", TextInputType.emailAddress),
               SizedBox(height: height * 0.02),
-              appTextField(context, password, true, "Пароль"),
+              appTextField(context, password, true, "Пароль",
+                  TextInputType.visiblePassword),
               SizedBox(
                 height: height * 0.02,
               ),

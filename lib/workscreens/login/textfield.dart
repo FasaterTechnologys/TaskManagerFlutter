@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:taskmanager/consts.dart';
 
 Widget appTextField(BuildContext context, TextEditingController controller,
-    bool password, String hint) {
+    bool password, String hint, TextInputType inputtype) {
   return Container(
     decoration:
         BoxDecoration(color: field, borderRadius: BorderRadius.circular(15)),
@@ -10,6 +10,7 @@ Widget appTextField(BuildContext context, TextEditingController controller,
     width: MediaQuery.of(context).size.width * 0.8,
     height: MediaQuery.of(context).size.height * 0.06,
     child: TextFormField(
+      keyboardType: inputtype,
       textInputAction: TextInputAction.next,
       obscureText: password,
       controller: controller,

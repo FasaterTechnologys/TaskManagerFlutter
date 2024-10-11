@@ -26,7 +26,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
         timer.cancel();
         if (!mounted) return;
         Navigator.of(context)
-            .pushNamedAndRemoveUntil("/login", (Route<dynamic> route) => false);
+            .pushNamedAndRemoveUntil("/home", (Route<dynamic> route) => false);
       }
       if (timer.tick % 10 == 0) {
         lock = false;

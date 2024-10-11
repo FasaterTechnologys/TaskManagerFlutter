@@ -21,6 +21,47 @@ class ManageData {
     final encodedData = json.encode(data.map((task) => task.toJson()).toList());
     await prefs.setString('tasks', encodedData);
   }
+
+  void addTask(
+    String title,
+    String description,
+    String creationDate,
+    String category,
+  ) {
+    data.add(
+      Task(
+        title: title,
+        description: description,
+        creationDate: creationDate,
+        category: category,
+      ),
+    );
+  }
+
+  void updateTask(
+    int index,
+    String title,
+    String description,
+    String category,
+  ) {
+    if (index >= 0 && index < data.length) {
+      data[index].title = title;
+      data[index].description = description;
+      data[index].category = category;
+    }
+  }
+
+  List<String> extractUniqueCategories() {
+    final categories = <String>{};
+
+    for (final task in data) {
+      if (task.category != "Другое") {
+        categories.add(task.category);
+      }
+    }
+
+    return categories.toList();
+  }
 }
 
 class Task {

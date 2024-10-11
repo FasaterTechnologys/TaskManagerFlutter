@@ -4,7 +4,10 @@ import 'package:taskmanager/managedata/managedata.dart';
 
 class TaskInputBottomSheet extends StatefulWidget {
   final Function updateData;
-  const TaskInputBottomSheet({required this.updateData, super.key});
+  final int? index;
+  final String? category;
+  const TaskInputBottomSheet(
+      {required this.updateData, this.index, this.category, super.key});
 
   @override
   TaskInputBottomSheetState createState() => TaskInputBottomSheetState();
@@ -13,17 +16,38 @@ class TaskInputBottomSheet extends StatefulWidget {
 class TaskInputBottomSheetState extends State<TaskInputBottomSheet> {
   final _taskController = TextEditingController();
   final _lowtaskController = TextEditingController();
+  final _categoryController = TextEditingController(text: "Другое");
   List<Widget> lowTask = [];
-  List<TextEditingController> lowTaskController = [];
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.index != null) {
+      _populateControllersFromTask(widget.index!);
+    } else if (widget.category != null) {
+      _categoryController.text = widget.category!;
+    }
+  }
+
+  void _populateControllersFromTask(int index) {
+    if (index >= 0 && index < data.length) {
+      _taskController.text = data[index].title;
+      _lowtaskController.text = data[index].description;
+      _categoryController.text = data[index].category;
+    }
+  }
 
   @override
   void dispose() {
     _taskController.dispose();
+    _lowtaskController.dispose();
+    _categoryController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    ManageData manageData = ManageData();
     return Container(
       height: heigtScreen * 0.9,
       decoration: BoxDecoration(
@@ -52,6 +76,22 @@ class TaskInputBottomSheetState extends State<TaskInputBottomSheet> {
                   hintStyle: const TextStyle(
                     color: Color.fromARGB(255, 207, 207, 207),
                   ),
+                ),
+              ),
+              TextField(
+                keyboardType: TextInputType.multiline,
+                maxLines: null,
+                textInputAction: TextInputAction.newline,
+                style: appverylowthinTextStyle,
+                autofocus: true,
+                controller: _categoryController,
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                  ),
+                  hintText: 'Введите категорию',
+                  hintStyle: appverylowthinTextStyle,
+                  labelStyle: appverylowthinTextStyle,
                 ),
               ),
               Row(
@@ -92,11 +132,23 @@ class TaskInputBottomSheetState extends State<TaskInputBottomSheet> {
                 child: GestureDetector(
                   onTap: () {
                     ManageData saveData = ManageData();
-                    data.add(Task(
-                      title: _taskController.text.trim(),
-                      description: _lowtaskController.text.trim(),
-                      creationDate: getFormattedDateTime().toString(),
-                    ));
+
+                    if (widget.index == null) {
+                      manageData.addTask(
+                        _taskController.text.trim(),
+                        _lowtaskController.text.trim(),
+                        getFormattedDateTime().toString(),
+                        _categoryController.text == ""
+                            ? "Другое"
+                            : _categoryController.text,
+                      );
+                    } else {
+                      manageData.updateTask(
+                          widget.index ?? -1,
+                          _taskController.text,
+                          _lowtaskController.text,
+                          _categoryController.text);
+                    }
                     saveData.saveData();
                     widget.updateData();
                     Navigator.pop(context);
@@ -123,3 +175,5 @@ class TaskInputBottomSheetState extends State<TaskInputBottomSheet> {
     );
   }
 }
+
+class EditData {}

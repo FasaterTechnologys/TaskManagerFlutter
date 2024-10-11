@@ -22,7 +22,7 @@ Widget dawer(BuildContext context) {
                       size: widthScreen * 0.07, color: Colors.white),
                   Icon(Icons.cloud_off,
                       size: widthScreen * 0.07,
-                      color: const Color.fromARGB(255, 179, 49, 40))
+                      color: const Color.fromARGB(255, 207, 207, 207))
                 ],
               ),
             ),

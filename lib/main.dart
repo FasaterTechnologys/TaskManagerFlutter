@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:taskmanager/managedata/managedata.dart';
 import 'package:taskmanager/workscreens/login/login.dart';
 import 'package:taskmanager/workscreens/mailverif/email_aunt.dart';
 import 'package:taskmanager/consts.dart';
